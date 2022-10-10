@@ -1,0 +1,29 @@
+
+ABST
+PAL  A flexible disk file signal storage apparatus has a multiplicity of
+      relatively thin, flexible disks of varying radii and arranged axially to
+      facilitate radial disk selection. The radii pattern tends to minimize
+      radii differences, thereby enhancing storage capacity. The flexible disks
+      are arranged in axial groups of more than three disks with at least one
+      disk in each group having a minimum radius with a pair of outer disks with
+      a maximum radius plus at least one intermediate diameter disk. By
+      interleaving alternate ones of said minimum radius disks between
+      intermediate and maximum radius disks, radial selection access ports are
+      maximized along an axial direction for a given radial difference between
+      the maximum and minimum disk radii.
+BSUM
+PAC  BACKGROUND OF THE INVENTION
+PAR  This invention relates to rotating magnetic memories.
+PAR  Rotating magnetic members used as storage media are well known in the form
+      of magnetic drums, magnetic disks, magnetic strips, and flexible magnetic
+      disks. The latter category of rotating magnetic memories offers enhanced
+      volumetric efficiency in the storage of signals; that is, the number of
+      disks stored in a given volumetric unit appears to be a maximal when used
+      with such flexible magnetic disks. Such flexible magnetic disks preferably
+      have a relatively thin, axial dimension in the order of magnitude from
+      0.0010, or 0.005 inch. It is also preferred, for stabilization purposes,
+      that such disks be axially spaced apart a small distance, such as one-half
+      mil to ten mils, with radial air flow being circumferentially uniformly
+      distributed for stabilizing the individual disks during rotation.
+
+par
