@@ -125,11 +125,7 @@ sum(1 for _ in re.finditer(pattern_ABS1,abst_str))
 with open('test.txt', 'r') as f:
     text1 = f.read()
 
-#%%
-pattern_ABS = re.compile(r'par')
-matches = pattern_ABS.finditer(text1)
-#for match in matches:
-#    print(match.group())     
+
 #%%
 sum(1 for _ in re.finditer(pattern_ISD,text))
 
@@ -148,13 +144,22 @@ sum(1 for _ in re.finditer(pattern_ICL,text))
 # %%
 result_1976 = pd.DataFrame({'Pattent ID':wku_num, 'Publish Date':ISD_num, 'Abstract':ABST})
 #result_1976.to_excel('demo.xlsx')
+#%%
+result_1976.head(10)
+#%%
+# motified id
+result_1976['Adjusted ID'] = result_1976['Pattent ID'].iloc[5:].str[:-1]
 
+#%%
+result_1976['Abstract'] = result_1976['Abstract'].str[10:]
+#print(test1)
+#%%
+result_1976.head(10)
 #%%
 result_1976.to_pickle('demo1')
 #%%
 print(result_1976.tail())
-#%%
-result_1976.tail(5)
+
 #%%
 test = pd.read_pickle('demo1')
 print(test.head(10))
@@ -165,5 +170,19 @@ print(test.head(10))
 # CLAS ~ FSC for us class 
 # FD
 # %%
-# publish day is same in one file?
 # CLAS problems
+pattern_clas = re.compile(r'CLAS\n*\n*((?:\n.*)+?)(?=\nFSC|\Z)')
+matches = pattern_clas.finditer(text)
+CLAS = []
+for match in matches:
+    value = match.group()
+    CLAS.append(value)
+    #print(match.group())     
+
+#%%
+sum(1 for _ in re.finditer(pattern_clas,text))#1379
+# %%
+result_1976['CLAS'] = CLAS
+# %%
+result_1976.head(10)
+# %%
