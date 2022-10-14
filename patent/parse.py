@@ -188,7 +188,7 @@ clas.head()
 # %%
 import re
 
-r = re.compile(r'\d+ICL$')
+r = re.compile(r'\d+\s*')
 newlist = list(filter(r.match, CLAS)) # Read Note below
 print(newlist)
 # %%
