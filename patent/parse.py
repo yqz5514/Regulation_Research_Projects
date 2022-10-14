@@ -181,8 +181,14 @@ for match in matches:
 
 #%%
 sum(1 for _ in re.finditer(pattern_clas,text))#1379
+#%%
+clas = pd.DataFrame({'class':CLAS})
 # %%
-result_1976['CLAS'] = CLAS
+clas.head()
 # %%
-result_1976.head(10)
+import re
+
+r = re.compile(r'\d+ICL$')
+newlist = list(filter(r.match, CLAS)) # Read Note below
+print(newlist)
 # %%
