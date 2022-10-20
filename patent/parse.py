@@ -224,7 +224,6 @@ class_process(clas)
 import pandas as pd
 import re
 
-#%%
 with open('1976.txt', 'r') as f:
     text = f.read()
 
@@ -245,7 +244,7 @@ for match in matches:
     value = match.group() # same value for 19760106_wk1
     
     ISD.append(value)
-print(ISD[5])
+#print(ISD[5])
 
 #%%
 pattern_ABS = re.compile(r'ABST\n*\n*((?:\n.*)+?)(?=\n[A-Z]{4}|\Z)')
@@ -254,7 +253,7 @@ ABST = []
 for match in matches:
     val = match.group()
     ABST.append(val)
-print(ABST[5])
+#print(ABST[5])
 
 #%%
 # CLAS problems
@@ -275,18 +274,29 @@ def class_process(df):
     for x in df:
         x = re.sub(r'\nEDF\s\s\w+\n',',',x)
         x = re.sub('\n', ',', x)
-        #x = re.sub(r'(OCL|XCL)', ' ',x)
+        x = re.sub(r'(OCL|XCL)', ' ',x)
         new_class.append(x)
     return new_class
+#%%
+new_class1 = []
+def icl_process(df):
+    
+    for x in df:
+        x = re.sub(r'ICL', ' ',x)
+        x = re.sub('\n', ',', x)
+        
+        new_class1.append(x)
+    return new_class1
 
 #%%
 cla = class_process(new[0])
 #%%
-icl=[re.sub('\n', ',', x) for x in new[1]]
+#icl=[re.sub('\n', ',', x) for x in new[1]]
+icl = icl_process(new[1])
 #%%
 len(cla)
 #%%
-len(CLAS)
+len(icl)
 #%%
 cla
 #%%
@@ -297,12 +307,15 @@ result_1976 = pd.DataFrame({'Pattent ID':list, 'Publish Date':ISD,
 result_1976.head(10)
 #%%
 result_1976['Abstract'] = result_1976['Abstract'].str[10:]
-#%%
-# motified id
-result_1976['Adjusted ID'] = result_1976['Pattent ID'].iloc[5:].str[:-1]
+result_1976['Adjusted ID'] = result_1976['Pattent ID'].str[:-1]
+result_1976['Adjusted ID'] = result_1976['Pattent ID'].str[5:-1]
+
 result_1976['Publish Date'] = result_1976['Publish Date'].str[5:]
 result_1976['class'] = result_1976['class'].str[5:]
 
+
 #%%
 result_1976.head(5)
+# %%
+result_1976.to_excel('1976_wk01.xlsx')
 # %%
