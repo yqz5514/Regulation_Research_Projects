@@ -102,10 +102,10 @@ for match in matches:
     ABST.append(val)
 print(ABST[5])
 #%%
-abst_str = ''.join(ABST)
+#abst_str = ''.join(ABST)
 #%%
-pattern_ABS1 = re.compile(r'ABST\n*\n*((?:\n.*)+?)(?=\n[A-Z]{4}|\Z)')
-matches = pattern_ABS1.finditer(abst_str)
+#pattern_ABS1 = re.compile(r'ABST\n*\n*((?:\n.*)+?)(?=\n[A-Z]{4}|\Z)')
+#matches = pattern_ABS1.finditer(abst_str)
 #for match in matches:
 #    print(match.group())     
 
@@ -131,12 +131,12 @@ sum(1 for _ in re.finditer(pattern_ISD,text))
 
 #%%
 #ICL
-pattern_ICL = re.compile(r'ICL\s\s\w+')
-matches = pattern_ICL.finditer(text)
+#pattern_ICL = re.compile(r'ICL\s\s\w+')
+#matches = pattern_ICL.finditer(text)
 #for match in matches:
 #    print(match.group())
 #%%
-sum(1 for _ in re.finditer(pattern_ICL,text))
+#sum(1 for _ in re.finditer(pattern_ICL,text))
 # search ICL\s\s\w+ #2023
 # some aplication has multiple line of ICL info
 
@@ -181,14 +181,128 @@ for match in matches:
 
 #%%
 sum(1 for _ in re.finditer(pattern_clas,text))#1379
+
+#%%
+CLAS
 #%%
 clas = pd.DataFrame({'class':CLAS})
 # %%
 clas.head()
 # %%
+#import re
+#
+#r = re.compile(r'ICL\s\s')
+#newlist = list(filter(r.finditer, CLAS)) # Read Note below
+#print(newlist)
+# %%
+clas['class'][1]
+# %%
+clas['ICL'] = clas['class'].str.split('ICL')
+# %%
+new = clas['class'].str.split("ICL", n = 1, expand = True)
+# %%
+clas['class1']=new[0]
+clas['icl']=new[1]
+# %%
+test = clas['class1'][0]
+
+# %%
+new_class = []
+for x in clas['class1']:
+    x = re.sub(r'\nEDF\s\s\w+\n',' ',x)
+    x = re.sub('\n', ' ', x)
+    new_class.append(x)
+
+#%%
+len(new_class)
+# %%
+class_process(clas)
+# %%
+########################################################
+#%%
+# library
+import pandas as pd
 import re
 
-r = re.compile(r'\d+\s*')
-newlist = list(filter(r.match, CLAS)) # Read Note below
-print(newlist)
+#%%
+with open('1976.txt', 'r') as f:
+    text = f.read()
+
+# %%
+pattern_WKU = re.compile(r'WKU\s\s(RE)?\d+')
+matches = pattern_WKU.finditer(text)
+list = []
+for match in matches:
+    value = match.group()
+
+    list.append(value)
+#print(list[5])
+#%%
+pattern_ISD = re.compile(r'ISD\s\s(1976)\d+')
+matches = pattern_ISD.finditer(text)
+ISD = []
+for match in matches:
+    value = match.group() # same value for 19760106_wk1
+    
+    ISD.append(value)
+print(ISD[5])
+
+#%%
+pattern_ABS = re.compile(r'ABST\n*\n*((?:\n.*)+?)(?=\n[A-Z]{4}|\Z)')
+matches = pattern_ABS.finditer(text)
+ABST = []
+for match in matches:
+    val = match.group()
+    ABST.append(val)
+print(ABST[5])
+
+#%%
+# CLAS problems
+pattern_clas = re.compile(r'CLAS\n*\n*((?:\n.*)+?)(?=\nFSC|\Z)')
+matches = pattern_clas.finditer(text)
+CLAS = []
+for match in matches:
+    value = match.group()
+    CLAS.append(value)
+#%%
+clas = pd.DataFrame({'class':CLAS})
+
+new = clas['class'].str.split("ICL", n = 1, expand = True)
+#%%
+new_class = []
+def class_process(df):
+    
+    for x in df:
+        x = re.sub(r'\nEDF\s\s\w+\n',',',x)
+        x = re.sub('\n', ',', x)
+        #x = re.sub(r'(OCL|XCL)', ' ',x)
+        new_class.append(x)
+    return new_class
+
+#%%
+cla = class_process(new[0])
+#%%
+icl=[re.sub('\n', ',', x) for x in new[1]]
+#%%
+len(cla)
+#%%
+len(CLAS)
+#%%
+cla
+#%%
+result_1976 = pd.DataFrame({'Pattent ID':list, 'Publish Date':ISD, 
+                            'Abstract':ABST,'Raw_Clas':CLAS,'class':cla,'ICL':icl})
+
+#%%
+result_1976.head(10)
+#%%
+result_1976['Abstract'] = result_1976['Abstract'].str[10:]
+#%%
+# motified id
+result_1976['Adjusted ID'] = result_1976['Pattent ID'].iloc[5:].str[:-1]
+result_1976['Publish Date'] = result_1976['Publish Date'].str[5:]
+result_1976['class'] = result_1976['class'].str[5:]
+
+#%%
+result_1976.head(5)
 # %%
