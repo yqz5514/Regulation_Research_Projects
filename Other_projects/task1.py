@@ -16,8 +16,12 @@ df1['org'] = df1['title']
 df1
 # %%
 df1['org'] = df1['org'].str[21:]
+#%%
+for x in df1.org:
+    for y in len(x):
+        print(max(y))
 # %%
-df1.org.values
+max1 = [max(len(x)) for x in df1['org']]
 # %%
 new = df1['org'].str.split(",", n = 3, expand = True)
 #%%
