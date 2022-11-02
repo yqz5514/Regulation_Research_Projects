@@ -223,6 +223,117 @@
 # library
 import pandas as pd
 import re
+import os
+#%%
+import os
+#C:\Users\Ann's XPS\Downloads\1976\1967
+# import os
+# for root, _, files in os.walk(path):
+#     for filename in files:
+#         with open(os.path.join(root, filename), 'r') as f:
+#             #your code goes here
+
+
+
+#%%
+
+
+#folder = "C:\Users\Ann's XPS\Downloads\1976\1967"
+file_name = []
+for filename in os.listdir(r"C:/Users/Ann's XPS/Downloads/1976/1976"):
+    file_name.append(filename)
+    # infilename = os.path.join(folder, filename)
+    # if not os.path.isfile(infilename): continue
+
+    # base, extension = os.path.splitext(filename)
+    # infile = open(infilename, 'r')
+    # outfile = open(os.path.join(folder, '{}_edit.{}'.format(base, extension)), 'w')
+    # newfield2(infile, outfile)
+#%%
+par_f = file_name[0:10]
+par_f
+
+#%%
+class text_process():
+    
+    def 
+#%%
+def text_processor(par_f):
+    for i in par_f:
+        with open(i, 'r') as f:
+            text = f.read()
+
+def get_Id(text):
+    pattern_WKU = re.compile(r'WKU\s\s(RE)?\d+')
+    matches = pattern_WKU.finditer(text)
+    list = []
+    for match in matches:
+        value = match.group()
+        list.append(value)
+    return list
+    
+def get_Isd(text):
+        
+    pattern_ISD = re.compile(r'ISD\s\s(1976)\d+')
+    matches = pattern_ISD.finditer(text)
+    ISD = []
+    for match in matches:
+        value = match.group() # same value for 19760106_wk1
+        ISD.append(value)
+    return ISD
+    
+def get_Abs(text):
+    pattern_ABS = re.compile(r'ABST\n*\n*((?:\n.*)+?)(?=\n[A-Z]{4}|\Z)')
+    matches = pattern_ABS.finditer(text)
+    ABST = []
+    for match in matches:
+        val = match.group()
+        ABST.append(val)
+    return ABST
+
+# CLAS problems
+pattern_clas = re.compile(r'CLAS\n*\n*((?:\n.*)+?)(?=\nFSC|\Z)')
+matches = pattern_clas.finditer(text)
+CLAS = []
+for match in matches:
+    value = match.group()
+    CLAS.append(value)
+
+clas = pd.DataFrame({'class':CLAS})
+
+new = clas['class'].str.split("ICL", n = 1, expand = True)
+
+new_class = []
+def class_process(df):
+    
+    for x in df:
+        x = re.sub(r'\nEDF\s\s\w+\n',',',x)
+        x = re.sub('\n', ',', x)
+        x = re.sub(r'(OCL|XCL)', ' ',x)
+        new_class.append(x)
+    return new_class
+
+new_class1 = []
+def icl_process(df):
+    
+    for x in df:
+        x = re.sub(r'ICL', ' ',x)
+        x = re.sub('\n', ',', x)
+        
+        new_class1.append(x)
+    return new_class1
+
+
+cla = class_process(new[0])
+
+#icl=[re.sub('\n', ',', x) for x in new[1]]
+icl = icl_process(new[1])
+
+
+
+
+
+#%%
 
 with open('1976.txt', 'r') as f:
     text = f.read()
@@ -256,6 +367,8 @@ for match in matches:
 #print(ABST[5])
 
 #%%
+
+
 # CLAS problems
 pattern_clas = re.compile(r'CLAS\n*\n*((?:\n.*)+?)(?=\nFSC|\Z)')
 matches = pattern_clas.finditer(text)
