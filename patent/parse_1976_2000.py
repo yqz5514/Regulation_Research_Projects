@@ -291,21 +291,22 @@ def get_Abs(text):
         ABST.append(val)
     return ABST
 
-# CLAS problems
-pattern_clas = re.compile(r'CLAS\n*\n*((?:\n.*)+?)(?=\nFSC|\Z)')
-matches = pattern_clas.finditer(text)
-CLAS = []
-for match in matches:
-    value = match.group()
-    CLAS.append(value)
+def ger_Clas():
+    pattern_clas = re.compile(r'CLAS\n*\n*((?:\n.*)+?)(?=\nFSC|\Z)')
+    matches = pattern_clas.finditer(text)
+    CLAS = []
+    for match in matches:
+        value = match.group()
+        CLAS.append(value)
 
-clas = pd.DataFrame({'class':CLAS})
+    clas = pd.DataFrame({'class':CLAS})
 
-new = clas['class'].str.split("ICL", n = 1, expand = True)
+    new = clas['class'].str.split("ICL", n = 1, expand = True)
+    return new
 
-new_class = []
+
 def class_process(df):
-    
+    new_class = []
     for x in df:
         x = re.sub(r'\nEDF\s\s\w+\n',',',x)
         x = re.sub('\n', ',', x)
@@ -313,9 +314,9 @@ def class_process(df):
         new_class.append(x)
     return new_class
 
-new_class1 = []
+
 def icl_process(df):
-    
+    new_class1 = []
     for x in df:
         x = re.sub(r'ICL', ' ',x)
         x = re.sub('\n', ',', x)
@@ -324,11 +325,24 @@ def icl_process(df):
     return new_class1
 
 
-cla = class_process(new[0])
+# cla = class_process(new[0])
 
-#icl=[re.sub('\n', ',', x) for x in new[1]]
-icl = icl_process(new[1])
+# #icl=[re.sub('\n', ',', x) for x in new[1]]
+# icl = icl_process(new[1])
 
+
+result_1976 = pd.DataFrame({'id_original':list, 'date':ISD, 
+                            'abstract':ABST,'class_raw':CLAS,'clas':cla,'ICL':icl})
+
+#%%
+result_1976.head(10)
+#%%
+result_1976['abstract'] = result_1976['abstract'].str[10:]
+#result_1976['Adjusted ID'] = result_1976['Pattent ID'].str[:-1]
+result_1976['patent_id'] = result_1976['patent_id'].str[5:-1]
+
+result_1976['date'] = result_1976['date'].str[5:]
+result_1976['clas'] = result_1976['clas'].str[5:]
 
 
 
